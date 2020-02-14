@@ -1,33 +1,78 @@
 
 
 
-// give the computer a list of word
-
-var TSsongs = ['Enchanted', 'Afterglow', 'Treacherous'];
-
-//computer randomly chooses a word
+var TSsongs = ['enchanted', 'afterglow', 'treacherous'];
 var ChosenSong = TSsongs[Math.floor(Math.random() * TSsongs.length)];
-//determine length of Songtitle
-var TitleLength = ChosenSong.length
-console.log("Computer chose: " + ChosenSong, "Song Title Length: " + TitleLength);
+var TitleLength = ChosenSong.length;
+console.log("Computer chose: " + ChosenSong + "\n",
+ "Song Title Length: " + TitleLength);
 
 var guessesLeft = 10;
-var letters = ChosenSong.split('')
+var letters = ChosenSong.split('');
+var lettersguessed = [];
+var wrongletters = [];
+console.log(letters);
 
-console.log(letters)
-
+var refreshText = document.getElementById("refresh-text")
 var TitleLengthText = document.getElementById("titlelength-text");
+var ChosenSongText = document.getElementById("chosensong-text");
+var wronglettersText = document.getElementById("wrongletters-text");
+var guessesLeftText = document.getElementById("guessesleft-text")
+
+for(i=0;i<letters.length; i++){
+    var underscores = document.createElement("span");
+    underscores.id ="L" +i;
+//    if statement
+    underscores.textContent = "_ ";
+    ChosenSongText.appendChild(underscores);
+}
+
+guessesLeftText.textContent = "Guesses Left: " + guessesLeft;
 
 document.onkeyup = function(event) {
 
-    //  Determines which key was pressed.
     var userGuess = event.key;
-    console.log(userGuess);
-    var alphabet = [a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z];
-    if(letters.includes(userGuess)){console.log("true");}
-    //push the letter to the word underscores   
-    else if (alphabet.includes(userGuess)) {guessesLeft--;}
-    console.log("guesses left: " + guessesLeft);
+    var alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+     userGuess = userGuess.toLowerCase()
+    
+     if(alphabet.includes(userGuess)){
+        console.log("Letter guessed: " + userGuess);
+     }
+        
+    if(lettersguessed.includes(userGuess)){
+        alert("You already guessed that letter!");
+        console.log("letter already guessed"+ "\n\n............\n\n");
+        }
+
+        else if (letters.includes(userGuess)){
+        lettersguessed.push(userGuess);
+         for(i=0;i<letters.length;i++){
+                          if(userGuess == letters[i]){
+                            document.getElementById("L"+i).textContent = letters[i] + " "; 
+             }
+         }
+        
+                   
+        console.log("Letters Guessed: " + lettersguessed +"\n\n............\n\n");
+       
+    }
+
+    
+    else if (alphabet.includes(userGuess)) {
+        if(guessesLeft>0){ guessesLeft--;
+        lettersguessed.push(userGuess);
+        wrongletters.push(userGuess);
+        wronglettersText.textContent = "Wrong Letters Guessed: " + wrongletters;
+        guessesLeftText.textContent = "Guesses Left: " + guessesLeft;
+        }
+        else {
+            alert("You lost!")
+            refreshText.textContent = "Refresh the page to try again!";
+            }
+        console.log("All Letters Guessed: " + lettersguessed);
+        console.log("Wrong Letters Guessed: " + wrongletters);
+        console.log("Guesses left: " + guessesLeft + "\n\n............\n\n");
+    }
 
 
 }
@@ -36,26 +81,3 @@ document.onkeyup = function(event) {
 
 
 
-
-
-
-
-
-TitleLengthText.textContent = "Title Length: " + TitleLength;
-
-
-
-
-
-// user guesses a letter
-
-
-// if the letter is in the word, put the letter in the right position
-// if the letter is not in the word  
-//     put the letter in ar4eady guessed section
-//     decrease guess count by 1
-// if the letter is in already guessed or already in the word, alert letter already guessed
-
-
-// when all letters in the word are guesed then alert you win
-// if countdown gets to 0 alert you lose
